@@ -1,0 +1,34 @@
+[package]
+authors = ["PureStake"]
+edition = "2018"
+name = "nimbus-primitives"
+version = "0.1.0"
+description = "Primitive types and traites used in the nimbus consensus framework"
+
+[dependencies]
+parity-scale-codec = { version = "2.0.0", default-features = false, features = ["derive"] }
+async-trait = { version = "0.1", optional = true }
+
+frame-support = { git = "https://github.com/purestake/substrate", default-features = false, branch = "moonbeam-polkadot-v0.9.12" }
+frame-system = { git = "https://github.com/purestake/substrate", default-features = false, branch = "moonbeam-polkadot-v0.9.12" }
+sp-std = { git = "https://github.com/purestake/substrate", default-features = false, branch = "moonbeam-polkadot-v0.9.12" }
+sp-api = { git = "https://github.com/purestake/substrate", default-features = false, branch = "moonbeam-polkadot-v0.9.12" }
+sp-application-crypto = { git = "https://github.com/purestake/substrate", default-features = false, branch = "moonbeam-polkadot-v0.9.12" }
+sp-runtime = { git = "https://github.com/purestake/substrate", default-features = false, branch = "moonbeam-polkadot-v0.9.12" }
+sp-inherents = { git = "https://github.com/purestake/substrate", default-features = false, branch = "moonbeam-polkadot-v0.9.12" }
+scale-info = { version = "1.0.0", default-features = false, features = ["derive"] }
+
+[features]
+default = ["std"]
+std = [
+    "parity-scale-codec/std",
+    "frame-support/std",
+    "frame-system/std",
+    "sp-api/std",
+    "sp-std/std",
+    "sp-application-crypto/std",
+    "sp-runtime/std",
+    "sp-inherents/std",
+    "async-trait",
+    "scale-info/std",
+]
