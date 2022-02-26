@@ -23,10 +23,10 @@ substrate-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branc
 polkadot-client = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 
 # Cumulus dependencies
-cumulus-client-consensus-common = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-primitives-parachain-inherent = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-relay-chain-interface = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
+cumulus-client-consensus-common = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-relay-chain-interface = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 
 # Nimbus Dependencies
 nimbus-primitives = { path = "../nimbus-primitives" }

@@ -75,15 +75,15 @@ sp-timestamp = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sp-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 # Cumulus dependencies
-cumulus-client-cli = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-client-collator = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-client-consensus-common = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-client-network = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-client-service = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-primitives-parachain-inherent = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-relay-chain-interface = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
-cumulus-relay-chain-local = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
+cumulus-client-cli = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-client-collator = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-client-consensus-common = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-client-network = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-relay-chain-interface = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-relay-chain-local = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 # Polkadot dependencies
 polkadot-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 polkadot-parachain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
