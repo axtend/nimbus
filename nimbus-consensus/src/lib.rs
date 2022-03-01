@@ -21,7 +21,7 @@
 //! key it authors.
 
 use cumulus_client_consensus_common::{
-	ParachainBlockImport, ParachainCandidate, ParachainConsensus,
+	AllychainBlockImport, AllychainCandidate, AllychainConsensus,
 };
 use cumulus_primitives_core::{relay_chain::v1::Hash as PHash, ParaId, PersistedValidationData};
 pub use import_queue::import_queue;
@@ -51,13 +51,13 @@ pub use manual_seal::NimbusManualSealConsensusDataProvider;
 
 const LOG_TARGET: &str = "filtering-consensus";
 
-/// The implementation of the relay-chain provided consensus for parachains.
+/// The implementation of the relay-chain provided consensus for allychains.
 pub struct NimbusConsensus<B, PF, BI, ParaClient, CIDP> {
 	para_id: ParaId,
 	proposer_factory: Arc<Mutex<PF>>,
 	create_inherent_data_providers: Arc<CIDP>,
-	block_import: Arc<futures::lock::Mutex<ParachainBlockImport<BI>>>,
-	parachain_client: Arc<ParaClient>,
+	block_import: Arc<futures::lock::Mutex<AllychainBlockImport<BI>>>,
+	allychain_client: Arc<ParaClient>,
 	keystore: SyncCryptoStorePtr,
 	skip_prediction: bool,
 	_phantom: PhantomData<B>,
@@ -70,7 +70,7 @@ impl<B, PF, BI, ParaClient, CIDP> Clone for NimbusConsensus<B, PF, BI, ParaClien
 			proposer_factory: self.proposer_factory.clone(),
 			create_inherent_data_providers: self.create_inherent_data_providers.clone(),
 			block_import: self.block_import.clone(),
-			parachain_client: self.parachain_client.clone(),
+			allychain_client: self.allychain_client.clone(),
 			keystore: self.keystore.clone(),
 			skip_prediction: self.skip_prediction,
 			_phantom: PhantomData,
@@ -93,22 +93,22 @@ where
 			proposer_factory,
 			create_inherent_data_providers,
 			block_import,
-			parachain_client,
+			allychain_client,
 			keystore,
 			skip_prediction,
 		}: BuildNimbusConsensusParams<PF, BI, ParaClient, CIDP>,
-	) -> Box<dyn ParachainConsensus<B>>
+	) -> Box<dyn AllychainConsensus<B>>
 	where
-		Self: ParachainConsensus<B>,
+		Self: AllychainConsensus<B>,
 	{
 		Box::new(Self {
 			para_id,
 			proposer_factory: Arc::new(Mutex::new(proposer_factory)),
 			create_inherent_data_providers: Arc::new(create_inherent_data_providers),
-			block_import: Arc::new(futures::lock::Mutex::new(ParachainBlockImport::new(
+			block_import: Arc::new(futures::lock::Mutex::new(AllychainBlockImport::new(
 				block_import,
 			))),
-			parachain_client,
+			allychain_client,
 			keystore,
 			skip_prediction,
 			_phantom: PhantomData,
@@ -290,7 +290,7 @@ where
 }
 
 #[async_trait::async_trait]
-impl<B, PF, BI, ParaClient, CIDP> ParachainConsensus<B>
+impl<B, PF, BI, ParaClient, CIDP> AllychainConsensus<B>
 	for NimbusConsensus<B, PF, BI, ParaClient, CIDP>
 where
 	B: BlockT,
@@ -313,12 +313,12 @@ where
 		parent: &B::Header,
 		relay_parent: PHash,
 		validation_data: &PersistedValidationData,
-	) -> Option<ParachainCandidate<B>> {
+	) -> Option<AllychainCandidate<B>> {
 		let maybe_key = if self.skip_prediction {
 			first_available_key(&*self.keystore)
 		} else {
 			first_eligible_key::<B, ParaClient>(
-				self.parachain_client.clone(),
+				self.allychain_client.clone(),
 				&*self.keystore,
 				parent,
 				validation_data.relay_parent_number,
@@ -421,7 +421,7 @@ where
 		let post_block = B::new(post_header, extrinsics);
 
 		// Returning the block WITH the seal for distribution around the network.
-		Some(ParachainCandidate {
+		Some(AllychainCandidate {
 			block: post_block,
 			proof,
 		})
@@ -437,7 +437,7 @@ pub struct BuildNimbusConsensusParams<PF, BI, ParaClient, CIDP> {
 	pub proposer_factory: PF,
 	pub create_inherent_data_providers: CIDP,
 	pub block_import: BI,
-	pub parachain_client: Arc<ParaClient>,
+	pub allychain_client: Arc<ParaClient>,
 	pub keystore: SyncCryptoStorePtr,
 	pub skip_prediction: bool,
 }

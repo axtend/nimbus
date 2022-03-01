@@ -1,0 +1,98 @@
+[package]
+name = "allychain-template-node"
+authors = [ "Anonymous" ]
+build = "build.rs"
+description = "A Axlib node that demonstrates using the Nimbus consensus framework with instant seal and as a allychain."
+edition = "2021"
+homepage = "https://axlib.dev"
+license = "Unlicense"
+repository = "https://github.com/paritytech/cumulus/"
+version = "0.9.0"
+
+[package.metadata.docs.rs]
+targets = [ "x86_64-unknown-linux-gnu" ]
+
+[[bin]]
+name = "allychain-collator"
+path = "src/main.rs"
+
+[dependencies]
+codec = { package = "parity-scale-codec", version = "2.0.0" }
+derive_more = "0.99.2"
+hex-literal = "0.3.1"
+log = "0.4.14"
+serde = { version = "1.0.119", features = [ "derive" ] }
+flume = "0.10.9"
+clap = { version = "3.1", features = ["derive"] }
+
+# RPC related Dependencies
+jsonrpc-core = "18.0.0"
+
+# Local Dependencies
+nimbus-consensus = { path = "../../nimbus-consensus" }
+nimbus-primitives = { path = "../../nimbus-primitives" }
+allychain-template-runtime = { path = "../runtime" }
+
+# Axlib Dependencies
+frame-benchmarking = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+frame-benchmarking-cli = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+
+pallet-transaction-payment-rpc = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+
+axlib-frame-rpc-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+axlib-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+
+## Axlib Client Dependencies
+sc-basic-authorship = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-chain-spec = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-cli = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-client-api = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-consensus = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-consensus-manual-seal = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-executor = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-keystore = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-network = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-rpc = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-rpc-api = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-service = { git = "https://github.com/axtend/axlib", branch = "c92f69d", features = [ "wasmtime" ] }
+sc-telemetry = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-tracing = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sc-transaction-pool-api = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+
+## Axlib Primitive Dependencies
+sp-api = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-block-builder = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-blockchain = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+#sp-consensus = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-core = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-inherents = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-keystore = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-offchain = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-runtime = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-session = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-timestamp = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+sp-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+
+# Cumulus dependencies
+cumulus-client-cli = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-client-collator = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-client-consensus-common = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-client-network = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-primitives-allychain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-relay-chain-interface = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-relay-chain-local = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+# Axia dependencies
+polkadot-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+polkadot-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+polkadot-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+polkadot-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+polkadot-test-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+
+[build-dependencies]
+axlib-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+
+[features]
+runtime-benchmarks = [ "allychain-template-runtime/runtime-benchmarks" ]

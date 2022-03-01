@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Nimbus.  If not, see <http://www.gnu.org/licenses/>.
 
-use cumulus_primitives_parachain_inherent::{
-	ParachainInherentData, INHERENT_IDENTIFIER as PARACHAIN_INHERENT_IDENTIFIER,
+use cumulus_primitives_allychain_inherent::{
+	AllychainInherentData, INHERENT_IDENTIFIER as ALLYCHAIN_INHERENT_IDENTIFIER,
 };
 use nimbus_primitives::{
 	AuthorFilterAPI, CompatibleDigestItem, NimbusApi, NimbusId, NIMBUS_ENGINE_ID,
@@ -52,11 +52,11 @@ where
 	type Transaction = TransactionFor<C, B>;
 
 	fn create_digest(&self, parent: &B::Header, inherents: &InherentData) -> Result<Digest, Error> {
-		// Retrieve the relay chain block number to use as the slot number from the parachain inherent
+		// Retrieve the relay chain block number to use as the slot number from the allychain inherent
 		let slot_number = inherents
-			.get_data::<ParachainInherentData>(&PARACHAIN_INHERENT_IDENTIFIER)
-			.expect("Parachain inherent should decode correctly")
-			.expect("Parachain inherent should be present because we are mocking it")
+			.get_data::<AllychainInherentData>(&ALLYCHAIN_INHERENT_IDENTIFIER)
+			.expect("Allychain inherent should decode correctly")
+			.expect("Allychain inherent should be present because we are mocking it")
 			.validation_data
 			.relay_parent_number;
 

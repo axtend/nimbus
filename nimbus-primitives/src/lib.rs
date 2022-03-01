@@ -52,7 +52,7 @@ pub trait SlotBeacon {
 /// Anything that can provide a block height can be used as a slot beacon. This could be
 /// used in at least two realistic ways.
 /// 1. Use your own chain's height as the slot number
-/// 2. If you're a parachain, use the relay chain's height as the slot number.
+/// 2. If you're a allychain, use the relay chain's height as the slot number.
 impl<T: BlockNumberProvider<BlockNumber = u32>> SlotBeacon for T {
 	fn slot() -> u32 {
 		Self::current_block_number()

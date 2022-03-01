@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Nimbus.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Block executive to be used by relay chain validators when validating parachain blocks built
+//! Block executive to be used by relay chain validators when validating allychain blocks built
 //! with the nimubs consensus family.
 
 use frame_support::traits::ExecuteBlock;
@@ -25,7 +25,7 @@ use nimbus_primitives::{digests::CompatibleDigestItem, NimbusId, NIMBUS_ENGINE_I
 use sp_application_crypto::ByteArray;
 use sp_runtime::{generic::DigestItem, RuntimeAppPublic};
 
-/// Block executive to be used by relay chain validators when validating parachain blocks built
+/// Block executive to be used by relay chain validators when validating allychain blocks built
 /// with the nimubs consensus family.
 ///
 /// This will strip the seal digest, and confirm that it contains a valid signature

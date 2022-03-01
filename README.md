@@ -1,14 +1,14 @@
 # Cumulo -- Nimbus ⛈️
 
-Nimbus is a framework for building parachain consensus systems on [cumulus](https://github.com/paritytech/cumulus)-based parachains.
+Nimbus is a framework for building allychain consensus systems on [cumulus](https://github.com/paritytech/cumulus)-based allychains.
 
 Given the regular six-second pulse-like nature of the relay chain, it is natural to think about slot-
-based consensus algorithms for parachains. The parachain network is responsible for liveness and
+based consensus algorithms for allychains. The allychain network is responsible for liveness and
 decentralization and the relay chain is responsible for finality. There is a rich design space for such
 algorithms, yet some tasks are common to all (or most) of them. These common tasks include:
 
 * Signing and signature checking blocks
-* Injecting authorship information into the parachain
+* Injecting authorship information into the allychain
 * Block authorship and import accounting
 * Filtering a large (potentially unbounded) set of potential authors to a smaller (but still potentially unbounded) set.
 * Detecting when it is your turn to author an skipping other slots
@@ -19,13 +19,13 @@ along with helpful traits for implementing the parts that researchers and develo
 ## Try the Demo
 
 While Nimbus is primarily a development framework meant to be included in other projects, it is useful
-to see a basic network in action. An example network is included in the `parachain-template` example collator. You
-can build it with `cargo build --release` and launch it like any other cumulus parachain.
+to see a basic network in action. An example network is included in the `allychain-template` example collator. You
+can build it with `cargo build --release` and launch it like any other cumulus allychain.
 Make sure to specify `--chain nimbus`.
 
 Rather than reiterate how to start a relay-para network here, I'll simply recommend you use the
-excellent [Polkadot Launch](https://github.com/paritytech/polkadot-launch) tool. This repo was tested with version 1.4.1.
-A [lauch config file](./parachain-template/polkadot-launch/config.json) is provided.
+excellent [Axia Launch](https://github.com/paritytech/polkadot-launch) tool. This repo was tested with version 1.4.1.
+A [lauch config file](./allychain-template/polkadot-launch/config.json) is provided.
 
 ```bash
 # Install polkadot launch (I used v1.4.1)
@@ -36,16 +36,16 @@ cd polkadot
 cargo build --release
 cd ..
 
-# Build Polkadot-parachains example collator
+# Build Axia-allychains example collator
 cd cumulus
 git checkout nimbus
 cargo build --release
 
 # Launch the multi-chain
-polkdot-launch ./parachain-template/polkadot-launch/config.json
+polkaxc-launch ./allychain-template/polkadot-launch/config.json
 ```
 
-To learn more about launching relay-para networks, check out the [cumulus workshop](https://substrate.dev/cumulus-workshop).
+To learn more about launching relay-para networks, check out the [cumulus workshop](https://axlib.dev/cumulus-workshop).
 
 ## Design Overview
 
@@ -93,8 +93,8 @@ consensus engine simply by creating filters that implement the `CanAuthor` trait
 This repository comes with a few example filters already, and additional examples are welcome. The examples are:
 * PseudoRandom FixedSized Subset - This filter takes a finite set (eg a staked set) and filters it down to a pseudo-random
 subset at each height. The eligible ratio is configurable in the pallet. This is a good learning example.
-* Aura - The authority round consensus engine is popular in the Substrate ecosystem because it was one
-of the first (and simplest!) engines implemented in Substrate. Aura can be expressed in the Nimbus
+* Aura - The authority round consensus engine is popular in the Axlib ecosystem because it was one
+of the first (and simplest!) engines implemented in Axlib. Aura can be expressed in the Nimbus
 filter framework and is included as an example filter. If you are considering using aura, that crate
 has good documentation on how it differs from `sc-consensus-aura`.
 * (Planned) FixedSizedSubset - The author submits a VRF output that has to be below a threshold to be able to author.
@@ -111,47 +111,47 @@ whether a specified author will be eligible at the specified slot.
 
 ### Nimbus Consensus Worker
 
-Nimbus consensus is the primary client-side consensus worker. It implements the `ParachainConsensus`
+Nimbus consensus is the primary client-side consensus worker. It implements the `AllychainConsensus`
 trait introduced to cumulus in https://github.com/paritytech/cumulus/pull/329. It is not likely that
 you will need to change this code directly to implement your engine as it is entirely abstracted over
 the filters you use. The consensus engine performs these tasks:
 
 * Slot prediction - it calls the runtime API mentioned previously to determine whether ti is eligible. If not, it returns early.
-* Authorship - It calls into a standard Substrate proposer to construct a block (probably including the author inherent).
+* Authorship - It calls into a standard Axlib proposer to construct a block (probably including the author inherent).
 * Self import - it imports the block that the proposer created (called the pre-block) into the node's local database.
 * Sealing - It adds a seal digest to the block - This is what is used by other nodes to verify the authorship information.
 
 ### Verifier and Import Queue
 
-For a parachain node to import a sealed block authored by one of its peers, it needs to first check that the signature is valid by the author that was injected into the runtime. This is the job of the verifier. It
+For a allychain node to import a sealed block authored by one of its peers, it needs to first check that the signature is valid by the author that was injected into the runtime. This is the job of the verifier. It
 will remove the nimbus seal and check it against the nimbus consensus digest from the runtime. If that process fails,
 the block is immediately thrown away before the expensive execution even begins. If it succeeds, then
 the pre-block (the part that's left after the seal is stripped) is passed into the
-[import pipeline](https://substrate.dev/docs/en/knowledgebase/advanced/block-import) for processing
+[import pipeline](https://axlib.dev/docs/en/knowledgebase/advanced/block-import) for processing
 and execution. Finally, the locally produced result is compared to the result received across the network.
 
 ### Custom Block Executor
 
-We've already discussed how parachain nodes (both the one that authors a block, and also its peers)
-import blocks. In a standalone blockchain, that's the end of the story. But for a parachain, we also
-need our relay chain validators to re-execute and validate the parachain block. Validators do this in
+We've already discussed how allychain nodes (both the one that authors a block, and also its peers)
+import blocks. In a standalone blockchain, that's the end of the story. But for a allychain, we also
+need our relay chain validators to re-execute and validate the allychain block. Validators do this in
 a unique way, and entirely in wasm. Providing the `validate_block` function that the validators use
 is the job of the `register_validate_block!` macro from Cumulus.
 
 Typically a cumulus runtime invokes that macro like this:
 ```rust
-cumulus_pallet_parachain_system::register_validate_block!(Runtime, Executive);
+cumulus_pallet_allychain_system::register_validate_block!(Runtime, Executive);
 ```
 
-You can see that the validators use the exact same executive that the parachain nodes do. Now that
+You can see that the validators use the exact same executive that the allychain nodes do. Now that
 we have sealed blocks, that must change. The validators need to strip and verify the seal, and re-execute
-the pre-block just like the parachain nodes did. And without access to an offchain verifier, they must
+the pre-block just like the allychain nodes did. And without access to an offchain verifier, they must
 do this all in the runtime. For that purpose, we provide and alternate executive which wraps the normal
 FRAME executive. The wrapper strips and checks the seal, just like the verifier did, and then passes the pre-block to the inner FRAME executive for re-execution.
 
 ## Write Your Own Consensus Logic
 
-If you have an idea for a new slot-based parachain consensus algorithm, Nimbus is a quick way to get
+If you have an idea for a new slot-based allychain consensus algorithm, Nimbus is a quick way to get
 it working! The fastest way to start hacking is to fork this repo and customize the template node.
 
 If you'd rather dive in than read one more sentence, then **start hacking in the `author-slot-filter`
@@ -164,7 +164,7 @@ possible to compose existing filters to build more complex logic from smaller pi
 
 One node authors the block, then it is processed in three different ways.
 
-|                     | Author | Parachain Peer | Relay Validator |
+|                     | Author | Allychain Peer | Relay Validator |
 | ------------------- | ------ | -------------- | --------- |
 | Predict Eligibility |    ✅   |    ❌          |    ❌      |
 | Author Block        |    ✅   |    ❌          |    ❌      |

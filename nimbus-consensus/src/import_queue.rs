@@ -172,7 +172,7 @@ where
 
 		block_params.post_digests.push(seal);
 
-		// The standard is to use the longest chain rule. This is overridden by the `NimbusBlockImport` in the parachain context.
+		// The standard is to use the longest chain rule. This is overridden by the `NimbusBlockImport` in the allychain context.
 		block_params.fork_choice = Some(sc_consensus::ForkChoiceStrategy::LongestChain);
 
 		debug!(
@@ -191,8 +191,8 @@ pub fn import_queue<Client, Block: BlockT, I, CIDP>(
 	block_import: I,
 	create_inherent_data_providers: CIDP,
 	spawner: &impl sp_core::traits::SpawnEssentialNamed,
-	registry: Option<&substrate_prometheus_endpoint::Registry>,
-	parachain: bool,
+	registry: Option<&axlib_prometheus_endpoint::Registry>,
+	allychain: bool,
 ) -> ClientResult<BasicQueue<Block, I::Transaction>>
 where
 	I: BlockImport<Block, Error = ConsensusError> + Send + Sync + 'static,
@@ -209,7 +209,7 @@ where
 
 	Ok(BasicQueue::new(
 		verifier,
-		Box::new(NimbusBlockImport::new(block_import, parachain)),
+		Box::new(NimbusBlockImport::new(block_import, allychain)),
 		None,
 		spawner,
 		registry,
@@ -218,24 +218,24 @@ where
 
 /// Nimbus specific block import.
 ///
-/// Nimbus supports both parachain and non-parachain contexts. In the parachain
-/// context, new blocks should not be imported as best. Cumulus's ParachainBlockImport
-/// handles this correctly, but does not work in non-parachain contexts.
-/// This block import has a field indicating whether we should apply parachain rules or not.
+/// Nimbus supports both allychain and non-allychain contexts. In the allychain
+/// context, new blocks should not be imported as best. Cumulus's AllychainBlockImport
+/// handles this correctly, but does not work in non-allychain contexts.
+/// This block import has a field indicating whether we should apply allychain rules or not.
 ///
 /// There may be additional nimbus-specific logic here in the future, but for now it is
-/// only the conditional parachain logic
+/// only the conditional allychain logic
 pub struct NimbusBlockImport<I> {
 	inner: I,
-	parachain_context: bool,
+	allychain_context: bool,
 }
 
 impl<I> NimbusBlockImport<I> {
 	/// Create a new instance.
-	pub fn new(inner: I, parachain_context: bool) -> Self {
+	pub fn new(inner: I, allychain_context: bool) -> Self {
 		Self {
 			inner,
-			parachain_context,
+			allychain_context,
 		}
 	}
 }
@@ -261,9 +261,9 @@ where
 		mut block_import_params: sc_consensus::BlockImportParams<Block, Self::Transaction>,
 		cache: std::collections::HashMap<sp_consensus::CacheKeyId, Vec<u8>>,
 	) -> Result<sc_consensus::ImportResult, Self::Error> {
-		// If we are in the parachain context, best block is determined by the relay chain
+		// If we are in the allychain context, best block is determined by the relay chain
 		// except during initial sync
-		if self.parachain_context {
+		if self.allychain_context {
 			block_import_params.fork_choice = Some(sc_consensus::ForkChoiceStrategy::Custom(
 				block_import_params.origin == sp_consensus::BlockOrigin::NetworkInitialSync,
 			));
