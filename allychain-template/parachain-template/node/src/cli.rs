@@ -5,11 +5,11 @@ use std::path::PathBuf;
 /// Sub-commands supported by the collator.
 #[derive(Debug, clap::Subcommand)]
 pub enum Subcommand {
-	/// Export the genesis state of the parachain.
+	/// Export the genesis state of the allychain.
 	#[clap(name = "export-genesis-state")]
 	ExportGenesisState(ExportGenesisStateCommand),
 
-	/// Export the genesis wasm of the parachain.
+	/// Export the genesis wasm of the allychain.
 	#[clap(name = "export-genesis-wasm")]
 	ExportGenesisWasm(ExportGenesisWasmCommand),
 
@@ -42,25 +42,25 @@ pub enum Subcommand {
 	Benchmark(frame_benchmarking_cli::BenchmarkCmd),
 }
 
-/// Command for exporting the genesis state of the parachain
+/// Command for exporting the genesis state of the allychain
 #[derive(Debug, Parser)]
 pub struct ExportGenesisStateCommand {
 	/// Output file name or stdout if unspecified.
 	#[clap(parse(from_os_str))]
 	pub output: Option<PathBuf>,
 
-	/// Id of the parachain this state is for.
+	/// Id of the allychain this state is for.
 	///
 	/// Default: 100
 	#[clap(long, conflicts_with = "chain")]
-	pub parachain_id: Option<u32>,
+	pub allychain_id: Option<u32>,
 
 	/// Write output in binary. Default is to write in hex.
 	#[clap(short, long)]
 	pub raw: bool,
 
 	/// The name of the chain for that the genesis state should be exported.
-	#[clap(long, conflicts_with = "parachain-id")]
+	#[clap(long, conflicts_with = "allychain-id")]
 	pub chain: Option<String>,
 }
 
@@ -101,7 +101,7 @@ pub struct Cli {
 #[derive(Debug)]
 pub struct RelayChainCli {
 	/// The actual relay chain cli object.
-	pub base: polkadot_cli::RunCmd,
+	pub base: axia_cli::RunCmd,
 
 	/// Optional chain id that should be passed to the relay chain.
 	pub chain_id: Option<String>,
@@ -121,11 +121,11 @@ impl RelayChainCli {
 		let base_path = para_config
 			.base_path
 			.as_ref()
-			.map(|x| x.path().join("polkadot"));
+			.map(|x| x.path().join("axia"));
 		Self {
 			base_path,
 			chain_id,
-			base: polkadot_cli::RunCmd::parse_from(relay_chain_args),
+			base: axia_cli::RunCmd::parse_from(relay_chain_args),
 		}
 	}
 }

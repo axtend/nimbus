@@ -7,8 +7,8 @@ use codec::Encode;
 use cumulus_client_service::genesis::generate_genesis_block;
 use cumulus_primitives_core::ParaId;
 use log::info;
-use parachain_template_runtime::{Block, RuntimeApi};
-use polkadot_parachain::primitives::AccountIdConversion;
+use allychain_template_runtime::{Block, RuntimeApi};
+use axia_allychain::primitives::AccountIdConversion;
 use sc_cli::{
 	ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
 	NetworkParams, Result, RuntimeVersion, SharedParams, SubstrateCli,
@@ -21,7 +21,7 @@ use std::{io::Write, net::SocketAddr};
 fn load_spec(id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 	Ok(match id {
 		"dev" => Box::new(chain_spec::development_config()),
-		"template-rococo" => Box::new(chain_spec::local_testnet_config()),
+		"template-betanet" => Box::new(chain_spec::local_testnet_config()),
 		"" | "local" => Box::new(chain_spec::local_testnet_config()),
 		path => Box::new(chain_spec::ChainSpec::from_json_file(
 			std::path::PathBuf::from(path),
@@ -31,7 +31,7 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, St
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Parachain Collator Template".into()
+		"Allychain Collator Template".into()
 	}
 
 	fn impl_version() -> String {
@@ -39,10 +39,10 @@ impl SubstrateCli for Cli {
 	}
 
 	fn description() -> String {
-		"Parachain Collator Template\n\nThe command-line arguments provided first will be \
-		passed to the parachain node, while the arguments provided after -- will be passed \
+		"Allychain Collator Template\n\nThe command-line arguments provided first will be \
+		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relay chain node.\n\n\
-		parachain-collator <parachain-args> -- <relay-chain-args>"
+		allychain-collator <allychain-args> -- <relay-chain-args>"
 			.into()
 	}
 
@@ -63,13 +63,13 @@ impl SubstrateCli for Cli {
 	}
 
 	fn native_runtime_version(_: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
-		&parachain_template_runtime::VERSION
+		&allychain_template_runtime::VERSION
 	}
 }
 
 impl SubstrateCli for RelayChainCli {
 	fn impl_name() -> String {
-		"Parachain Collator Template".into()
+		"Allychain Collator Template".into()
 	}
 
 	fn impl_version() -> String {
@@ -77,10 +77,10 @@ impl SubstrateCli for RelayChainCli {
 	}
 
 	fn description() -> String {
-		"Parachain Collator Template\n\nThe command-line arguments provided first will be \
-		passed to the parachain node, while the arguments provided after -- will be passed \
+		"Allychain Collator Template\n\nThe command-line arguments provided first will be \
+		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relay chain node.\n\n\
-		parachain-collator <parachain-args> -- <relay-chain-args>"
+		allychain-collator <allychain-args> -- <relay-chain-args>"
 			.into()
 	}
 
@@ -97,11 +97,11 @@ impl SubstrateCli for RelayChainCli {
 	}
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
-		polkadot_cli::Cli::from_iter([RelayChainCli::executable_name()].iter()).load_spec(id)
+		axia_cli::Cli::from_iter([RelayChainCli::executable_name()].iter()).load_spec(id)
 	}
 
 	fn native_runtime_version(chain_spec: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
-		polkadot_cli::Cli::native_runtime_version(chain_spec)
+		axia_cli::Cli::native_runtime_version(chain_spec)
 	}
 }
 
@@ -123,7 +123,7 @@ macro_rules! construct_async_run {
 				RuntimeApi,
 				TemplateRuntimeExecutor,
 			>(
-				// We default to the non-parachain import queue and select chain.
+				// We default to the non-allychain import queue and select chain.
 				&$config, false,
 			)?;
 			let task_manager = $components.task_manager;
@@ -165,21 +165,21 @@ pub fn run() -> Result<()> {
 			let runner = cli.create_runner(cmd)?;
 
 			runner.sync_run(|config| {
-				let polkadot_cli = RelayChainCli::new(
+				let axia_cli = RelayChainCli::new(
 					&config,
 					[RelayChainCli::executable_name()]
 						.iter()
 						.chain(cli.relay_chain_args.iter()),
 				);
 
-				let polkadot_config = SubstrateCli::create_configuration(
-					&polkadot_cli,
-					&polkadot_cli,
+				let axia_config = SubstrateCli::create_configuration(
+					&axia_cli,
+					&axia_cli,
 					config.tokio_handle.clone(),
 				)
 				.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
-				cmd.run(config, polkadot_config)
+				cmd.run(config, axia_config)
 			})
 		}
 		Some(Subcommand::Revert(cmd)) => {
@@ -254,9 +254,9 @@ pub fn run() -> Result<()> {
 			runner.run_node_until_exit(|config| async move {
 				let para_id = chain_spec::Extensions::try_get(&*config.chain_spec)
 					.map(|e| e.para_id)
-					.ok_or_else(|| "Could not find parachain ID in chain-spec.")?;
+					.ok_or_else(|| "Could not find allychain ID in chain-spec.")?;
 
-				let polkadot_cli = RelayChainCli::new(
+				let axia_cli = RelayChainCli::new(
 					&config,
 					[RelayChainCli::executable_name()]
 						.iter()
@@ -265,8 +265,8 @@ pub fn run() -> Result<()> {
 
 				let id = ParaId::from(para_id);
 
-				let parachain_account =
-					AccountIdConversion::<polkadot_primitives::v0::AccountId>::into_account(&id);
+				let allychain_account =
+					AccountIdConversion::<axia_primitives::v0::AccountId>::into_account(&id);
 
 				let state_version =
 					RelayChainCli::native_runtime_version(&config.chain_spec).state_version();
@@ -275,13 +275,13 @@ pub fn run() -> Result<()> {
 				let genesis_state = format!("0x{:?}", HexDisplay::from(&block.header().encode()));
 
 				let tokio_handle = config.tokio_handle.clone();
-				let polkadot_config =
-					SubstrateCli::create_configuration(&polkadot_cli, &polkadot_cli, tokio_handle)
+				let axia_config =
+					SubstrateCli::create_configuration(&axia_cli, &axia_cli, tokio_handle)
 						.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
-				info!("Parachain id: {:?}", id);
-				info!("Parachain Account: {}", parachain_account);
-				info!("Parachain genesis state: {}", genesis_state);
+				info!("Allychain id: {:?}", id);
+				info!("Allychain Account: {}", allychain_account);
+				info!("Allychain genesis state: {}", genesis_state);
 				info!(
 					"Is collating: {}",
 					if config.role.is_authority() {
@@ -291,7 +291,7 @@ pub fn run() -> Result<()> {
 					}
 				);
 
-				crate::service::start_parachain_node(config, polkadot_config, id)
+				crate::service::start_allychain_node(config, axia_config, id)
 					.await
 					.map(|r| r.0)
 					.map_err(Into::into)
@@ -374,7 +374,7 @@ impl CliConfiguration<Self> for RelayChainCli {
 	where
 		F: FnOnce(&mut sc_cli::LoggerBuilder, &sc_service::Configuration),
 	{
-		unreachable!("PolkadotCli is never initialized; qed");
+		unreachable!("AxiaCli is never initialized; qed");
 	}
 
 	fn chain_id(&self, is_dev: bool) -> Result<String> {

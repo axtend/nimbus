@@ -4,7 +4,7 @@
 use std::{sync::Arc, time::Duration};
 
 // Local Runtime Types
-use parachain_template_runtime::{
+use allychain_template_runtime::{
 	opaque::Block, AccountId, Balance, Hash, Index as Nonce, NimbusId, RuntimeApi,
 };
 
@@ -13,13 +13,13 @@ use nimbus_consensus::{
 };
 
 // Cumulus Imports
-use cumulus_client_consensus_common::ParachainConsensus;
+use cumulus_client_consensus_common::AllychainConsensus;
 use cumulus_client_network::BlockAnnounceValidator;
 use cumulus_client_service::{
 	prepare_node_config, start_collator, start_full_node, StartCollatorParams, StartFullNodeParams,
 };
 use cumulus_primitives_core::ParaId;
-use cumulus_primitives_parachain_inherent::{
+use cumulus_primitives_allychain_inherent::{
 	MockValidationDataInherentDataProvider, MockXcmConfig,
 };
 use cumulus_relay_chain_interface::RelayChainInterface;
@@ -43,11 +43,11 @@ impl sc_executor::NativeExecutionDispatch for TemplateRuntimeExecutor {
 	type ExtendHostFunctions = frame_benchmarking::benchmarking::HostFunctions;
 
 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
-		parachain_template_runtime::api::dispatch(method, data)
+		allychain_template_runtime::api::dispatch(method, data)
 	}
 
 	fn native_version() -> sc_executor::NativeVersion {
-		parachain_template_runtime::native_version()
+		allychain_template_runtime::native_version()
 	}
 }
 
@@ -58,7 +58,7 @@ impl sc_executor::NativeExecutionDispatch for TemplateRuntimeExecutor {
 #[allow(clippy::type_complexity)]
 pub fn new_partial<RuntimeApi, Executor>(
 	config: &Configuration,
-	parachain: bool,
+	allychain: bool,
 ) -> Result<
 	PartialComponents<
 		TFullClient<Block, RuntimeApi, NativeElseWasmExecutor<Executor>>,
@@ -127,7 +127,7 @@ where
 		telemetry
 	});
 
-	// Although this will not be used by the parachain collator, it will be used by the instant seal
+	// Although this will not be used by the allychain collator, it will be used by the instant seal
 	// And sovereign nodes, so we create it anyway.
 	let select_chain = sc_consensus::LongestChain::new(backend.clone());
 
@@ -149,7 +149,7 @@ where
 		},
 		&task_manager.spawn_essential_handle(),
 		config.prometheus_registry().clone(),
-		parachain,
+		allychain,
 	)?;
 
 	let params = PartialComponents {
@@ -166,13 +166,13 @@ where
 	Ok(params)
 }
 
-/// Start a node with the given parachain `Configuration` and relay chain `Configuration`.
+/// Start a node with the given allychain `Configuration` and relay chain `Configuration`.
 ///
 /// This is the actual implementation that is abstract over the executor and the runtime api.
-#[sc_tracing::logging::prefix_logs_with("Parachain")]
+#[sc_tracing::logging::prefix_logs_with("Allychain")]
 async fn start_node_impl<RuntimeApi, Executor, RB, BIC>(
-	parachain_config: Configuration,
-	polkadot_config: Configuration,
+	allychain_config: Configuration,
+	axia_config: Configuration,
 	id: ParaId,
 	_rpc_ext_builder: RB,
 	build_consensus: BIC,
@@ -218,15 +218,15 @@ where
 		Arc<NetworkService<Block, Hash>>,
 		SyncCryptoStorePtr,
 		bool,
-	) -> Result<Box<dyn ParachainConsensus<Block>>, sc_service::Error>,
+	) -> Result<Box<dyn AllychainConsensus<Block>>, sc_service::Error>,
 {
-	if matches!(parachain_config.role, Role::Light) {
+	if matches!(allychain_config.role, Role::Light) {
 		return Err("Light client not supported!".into());
 	}
 
-	let parachain_config = prepare_node_config(parachain_config);
+	let allychain_config = prepare_node_config(allychain_config);
 
-	let params = new_partial::<RuntimeApi, Executor>(&parachain_config, true)?;
+	let params = new_partial::<RuntimeApi, Executor>(&allychain_config, true)?;
 	let (mut telemetry, telemetry_worker_handle) = params.other;
 
 	let client = params.client.clone();
@@ -234,22 +234,22 @@ where
 	let mut task_manager = params.task_manager;
 
 	let (relay_chain_interface, collator_key) =
-		build_relay_chain_interface(polkadot_config, telemetry_worker_handle, &mut task_manager)
+		build_relay_chain_interface(axia_config, telemetry_worker_handle, &mut task_manager)
 			.map_err(|e| match e {
-				polkadot_service::Error::Sub(x) => x,
+				axia_service::Error::Sub(x) => x,
 				s => format!("{}", s).into(),
 			})?;
 
 	let block_announce_validator = BlockAnnounceValidator::new(relay_chain_interface.clone(), id);
 
-	let force_authoring = parachain_config.force_authoring;
-	let validator = parachain_config.role.is_authority();
-	let prometheus_registry = parachain_config.prometheus_registry().cloned();
+	let force_authoring = allychain_config.force_authoring;
+	let validator = allychain_config.role.is_authority();
+	let prometheus_registry = allychain_config.prometheus_registry().cloned();
 	let transaction_pool = params.transaction_pool.clone();
 	let import_queue = cumulus_client_service::SharedImportQueue::new(params.import_queue);
 	let (network, system_rpc_tx, start_network) =
 		sc_service::build_network(sc_service::BuildNetworkParams {
-			config: &parachain_config,
+			config: &allychain_config,
 			client: client.clone(),
 			transaction_pool: transaction_pool.clone(),
 			spawn_handle: task_manager.spawn_handle(),
@@ -280,7 +280,7 @@ where
 		client: client.clone(),
 		transaction_pool: transaction_pool.clone(),
 		task_manager: &mut task_manager,
-		config: parachain_config,
+		config: allychain_config,
 		keystore: params.keystore_container.sync_keystore(),
 		backend: backend.clone(),
 		network: network.clone(),
@@ -296,7 +296,7 @@ where
 	let relay_chain_slot_duration = Duration::from_secs(6);
 
 	if validator {
-		let parachain_consensus = build_consensus(
+		let allychain_consensus = build_consensus(
 			client.clone(),
 			prometheus_registry.as_ref(),
 			telemetry.as_ref().map(|t| t.handle()),
@@ -318,7 +318,7 @@ where
 			task_manager: &mut task_manager,
 			relay_chain_interface,
 			spawner,
-			parachain_consensus,
+			allychain_consensus,
 			import_queue,
 			collator_key,
 			relay_chain_slot_duration,
@@ -344,18 +344,18 @@ where
 	Ok((task_manager, client))
 }
 
-/// Start a parachain node.
-pub async fn start_parachain_node(
-	parachain_config: Configuration,
-	polkadot_config: Configuration,
+/// Start a allychain node.
+pub async fn start_allychain_node(
+	allychain_config: Configuration,
+	axia_config: Configuration,
 	id: ParaId,
 ) -> sc_service::error::Result<(
 	TaskManager,
 	Arc<TFullClient<Block, RuntimeApi, NativeElseWasmExecutor<TemplateRuntimeExecutor>>>,
 )> {
 	start_node_impl::<RuntimeApi, TemplateRuntimeExecutor, _, _>(
-		parachain_config,
-		polkadot_config,
+		allychain_config,
+		axia_config,
 		id,
 		|_| Ok(Default::default()),
 		|client,
@@ -379,7 +379,7 @@ pub async fn start_parachain_node(
 				para_id: id,
 				proposer_factory,
 				block_import: client.clone(),
-				parachain_client: client.clone(),
+				allychain_client: client.clone(),
 				keystore,
 				skip_prediction: force_authoring,
 				create_inherent_data_providers: move |_,
@@ -390,8 +390,8 @@ pub async fn start_parachain_node(
 				)| {
 					let relay_chain_interface = relay_chain_interface.clone();
 					async move {
-						let parachain_inherent =
-							cumulus_primitives_parachain_inherent::ParachainInherentData::create_at(
+						let allychain_inherent =
+							cumulus_primitives_allychain_inherent::AllychainInherentData::create_at(
 								relay_parent,
 								&relay_chain_interface,
 								&validation_data,
@@ -400,15 +400,15 @@ pub async fn start_parachain_node(
 
 						let time = sp_timestamp::InherentDataProvider::from_system_time();
 
-						let parachain_inherent = parachain_inherent.ok_or_else(|| {
+						let allychain_inherent = allychain_inherent.ok_or_else(|| {
 							Box::<dyn std::error::Error + Send + Sync>::from(
-								"Failed to create parachain inherent",
+								"Failed to create allychain inherent",
 							)
 						})?;
 
 						let author = nimbus_primitives::InherentDataProvider::<NimbusId>(author_id);
 
-						Ok((time, parachain_inherent, author))
+						Ok((time, allychain_inherent, author))
 					}
 				},
 			}))
@@ -515,10 +515,10 @@ pub fn start_instant_seal_node(config: Configuration) -> Result<TaskManager, sc_
 				async move {
 					let time = sp_timestamp::InherentDataProvider::from_system_time();
 
-					// The nimbus runtime is shared among all nodes including the parachain node.
-					// Because this is not a parachain context, we need to mock the parachain inherent data provider.
+					// The nimbus runtime is shared among all nodes including the allychain node.
+					// Because this is not a allychain context, we need to mock the allychain inherent data provider.
 					//TODO might need to go back and get the block number like how I do in Moonbeam
-					let mocked_parachain = MockValidationDataInherentDataProvider {
+					let mocked_allychain = MockValidationDataInherentDataProvider {
 						current_para_block: 0,
 						relay_offset: 0,
 						relay_blocks_per_para_block: 0,
@@ -532,7 +532,7 @@ pub fn start_instant_seal_node(config: Configuration) -> Result<TaskManager, sc_
 						raw_horizontal_messages: hrmp_xcm_receiver.drain().collect(),
 					};
 
-					Ok((time, mocked_parachain))
+					Ok((time, mocked_allychain))
 				}
 			},
 		});

@@ -44,8 +44,8 @@ pub use sp_runtime::BuildStorage;
 
 // Axia Imports
 use pallet_xcm::XcmPassthrough;
-use polkadot_allychain::primitives::Sibling;
-use polkadot_runtime_common::{BlockHashCount, RocksDbWeight, SlowAdjustingFeeUpdate};
+use axia_allychain::primitives::Sibling;
+use axia_runtime_common::{BlockHashCount, RocksDbWeight, SlowAdjustingFeeUpdate};
 
 // XCM Imports
 use xcm::latest::prelude::*;

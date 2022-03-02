@@ -71,8 +71,8 @@ pallet-author-slot-filter = { path = "../../pallets/author-slot-filter", default
 
 # Axia Dependencies
 pallet-xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
-polkadot-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
-polkadot-runtime-common = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+axia-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+axia-runtime-common = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-builder = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-executor = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
@@ -110,8 +110,8 @@ std = [
 	"pallet-transaction-payment-rpc-runtime-api/std",
 	"pallet-transaction-payment/std",
 	"allychain-info/std",
-	"polkadot-allychain/std",
-	"polkadot-runtime-common/std",
+	"axia-allychain/std",
+	"axia-runtime-common/std",
 	"scale-info/std",
 	"serde",
 	"sp-api/std",

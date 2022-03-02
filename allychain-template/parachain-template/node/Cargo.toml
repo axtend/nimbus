@@ -1,8 +1,8 @@
 [package]
-name = "parachain-template-node"
+name = "allychain-template-node"
 authors = [ "Anonymous" ]
 build = "build.rs"
-description = "A Substrate node that demonstrates using the Nimbus consensus framework with instant seal and as a parachain."
+description = "A Substrate node that demonstrates using the Nimbus consensus framework with instant seal and as a allychain."
 edition = "2021"
 homepage = "https://substrate.dev"
 license = "Unlicense"
@@ -13,7 +13,7 @@ version = "0.9.0"
 targets = [ "x86_64-unknown-linux-gnu" ]
 
 [[bin]]
-name = "parachain-collator"
+name = "allychain-collator"
 path = "src/main.rs"
 
 [dependencies]
@@ -31,7 +31,7 @@ jsonrpc-core = "18.0.0"
 # Local Dependencies
 nimbus-consensus = { path = "../../nimbus-consensus" }
 nimbus-primitives = { path = "../../nimbus-primitives" }
-parachain-template-runtime = { path = "../runtime" }
+allychain-template-runtime = { path = "../runtime" }
 
 # Substrate Dependencies
 frame-benchmarking = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
@@ -81,18 +81,18 @@ cumulus-client-consensus-common = { git = "https://github.com/axtend/cumulus", b
 cumulus-client-network = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
-cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-primitives-allychain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-relay-chain-interface = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-relay-chain-local = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
-# Polkadot dependencies
-polkadot-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-parachain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-test-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+# Axia dependencies
+axia-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-test-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
 [build-dependencies]
 substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 [features]
-runtime-benchmarks = [ "parachain-template-runtime/runtime-benchmarks" ]
+runtime-benchmarks = [ "allychain-template-runtime/runtime-benchmarks" ]

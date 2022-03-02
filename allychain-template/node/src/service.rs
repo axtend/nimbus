@@ -172,7 +172,7 @@ where
 #[sc_tracing::logging::prefix_logs_with("Allychain")]
 async fn start_node_impl<RuntimeApi, Executor, RB, BIC>(
 	allychain_config: Configuration,
-	polkadot_config: Configuration,
+	axia_config: Configuration,
 	id: ParaId,
 	_rpc_ext_builder: RB,
 	build_consensus: BIC,
@@ -234,9 +234,9 @@ where
 	let mut task_manager = params.task_manager;
 
 	let (relay_chain_interface, collator_key) =
-		build_relay_chain_interface(polkadot_config, telemetry_worker_handle, &mut task_manager)
+		build_relay_chain_interface(axia_config, telemetry_worker_handle, &mut task_manager)
 			.map_err(|e| match e {
-				polkadot_service::Error::Sub(x) => x,
+				axia_service::Error::Sub(x) => x,
 				s => format!("{}", s).into(),
 			})?;
 
@@ -347,7 +347,7 @@ where
 /// Start a allychain node.
 pub async fn start_allychain_node(
 	allychain_config: Configuration,
-	polkadot_config: Configuration,
+	axia_config: Configuration,
 	id: ParaId,
 ) -> sc_service::error::Result<(
 	TaskManager,
@@ -355,7 +355,7 @@ pub async fn start_allychain_node(
 )> {
 	start_node_impl::<RuntimeApi, TemplateRuntimeExecutor, _, _>(
 		allychain_config,
-		polkadot_config,
+		axia_config,
 		id,
 		|_| Ok(Default::default()),
 		|client,

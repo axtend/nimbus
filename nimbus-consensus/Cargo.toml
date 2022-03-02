@@ -20,7 +20,7 @@ sp-runtime = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 axlib-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 # Axia dependencies
-polkadot-client = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+axia-client = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 
 # Cumulus dependencies
 cumulus-client-consensus-common = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }

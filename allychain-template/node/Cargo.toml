@@ -85,11 +85,11 @@ cumulus-primitives-allychain-inherent = { git = "https://github.com/axtend/cumul
 cumulus-relay-chain-interface = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-relay-chain-local = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 # Axia dependencies
-polkadot-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-test-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-test-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
 [build-dependencies]
 axlib-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }

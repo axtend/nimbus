@@ -24,15 +24,15 @@ can build it with `cargo build --release` and launch it like any other cumulus a
 Make sure to specify `--chain nimbus`.
 
 Rather than reiterate how to start a relay-para network here, I'll simply recommend you use the
-excellent [Axia Launch](https://github.com/paritytech/polkadot-launch) tool. This repo was tested with version 1.4.1.
-A [lauch config file](./allychain-template/polkadot-launch/config.json) is provided.
+excellent [Axia Launch](https://github.com/paritytech/axia-launch) tool. This repo was tested with version 1.4.1.
+A [lauch config file](./allychain-template/axia-launch/config.json) is provided.
 
 ```bash
-# Install polkadot launch (I used v1.4.1)
-npm i -g polkadot-launch
+# Install axia launch (I used v1.4.1)
+npm i -g axia-launch
 
-# Build polkadot (I used 82aa404c; check Cargo.lock to be sure)
-cd polkadot
+# Build axia (I used 82aa404c; check Cargo.lock to be sure)
+cd axia
 cargo build --release
 cd ..
 
@@ -42,7 +42,7 @@ git checkout nimbus
 cargo build --release
 
 # Launch the multi-chain
-polkaxc-launch ./allychain-template/polkadot-launch/config.json
+polkaxc-launch ./allychain-template/axia-launch/config.json
 ```
 
 To learn more about launching relay-para networks, check out the [cumulus workshop](https://axlib.dev/cumulus-workshop).

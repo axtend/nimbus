@@ -8,7 +8,7 @@ use cumulus_client_service::genesis::generate_genesis_block;
 use cumulus_primitives_core::ParaId;
 use log::info;
 use allychain_template_runtime::{Block, RuntimeApi};
-use polkadot_allychain::primitives::AccountIdConversion;
+use axia_allychain::primitives::AccountIdConversion;
 use sc_cli::{
 	ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
 	NetworkParams, Result, RuntimeVersion, SharedParams, AxlibCli,
@@ -97,11 +97,11 @@ impl AxlibCli for RelayChainCli {
 	}
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
-		polkadot_cli::Cli::from_iter([RelayChainCli::executable_name()].iter()).load_spec(id)
+		axia_cli::Cli::from_iter([RelayChainCli::executable_name()].iter()).load_spec(id)
 	}
 
 	fn native_runtime_version(chain_spec: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
-		polkadot_cli::Cli::native_runtime_version(chain_spec)
+		axia_cli::Cli::native_runtime_version(chain_spec)
 	}
 }
 
@@ -165,21 +165,21 @@ pub fn run() -> Result<()> {
 			let runner = cli.create_runner(cmd)?;
 
 			runner.sync_run(|config| {
-				let polkadot_cli = RelayChainCli::new(
+				let axia_cli = RelayChainCli::new(
 					&config,
 					[RelayChainCli::executable_name()]
 						.iter()
 						.chain(cli.relay_chain_args.iter()),
 				);
 
-				let polkadot_config = AxlibCli::create_configuration(
-					&polkadot_cli,
-					&polkadot_cli,
+				let axia_config = AxlibCli::create_configuration(
+					&axia_cli,
+					&axia_cli,
 					config.tokio_handle.clone(),
 				)
 				.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
-				cmd.run(config, polkadot_config)
+				cmd.run(config, axia_config)
 			})
 		}
 		Some(Subcommand::Revert(cmd)) => {
@@ -256,7 +256,7 @@ pub fn run() -> Result<()> {
 					.map(|e| e.para_id)
 					.ok_or_else(|| "Could not find allychain ID in chain-spec.")?;
 
-				let polkadot_cli = RelayChainCli::new(
+				let axia_cli = RelayChainCli::new(
 					&config,
 					[RelayChainCli::executable_name()]
 						.iter()
@@ -266,7 +266,7 @@ pub fn run() -> Result<()> {
 				let id = ParaId::from(para_id);
 
 				let allychain_account =
-					AccountIdConversion::<polkadot_primitives::v0::AccountId>::into_account(&id);
+					AccountIdConversion::<axia_primitives::v0::AccountId>::into_account(&id);
 
 				let state_version =
 					RelayChainCli::native_runtime_version(&config.chain_spec).state_version();
@@ -275,8 +275,8 @@ pub fn run() -> Result<()> {
 				let genesis_state = format!("0x{:?}", HexDisplay::from(&block.header().encode()));
 
 				let tokio_handle = config.tokio_handle.clone();
-				let polkadot_config =
-					AxlibCli::create_configuration(&polkadot_cli, &polkadot_cli, tokio_handle)
+				let axia_config =
+					AxlibCli::create_configuration(&axia_cli, &axia_cli, tokio_handle)
 						.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
 				info!("Allychain id: {:?}", id);
@@ -291,7 +291,7 @@ pub fn run() -> Result<()> {
 					}
 				);
 
-				crate::service::start_allychain_node(config, polkadot_config, id)
+				crate::service::start_allychain_node(config, axia_config, id)
 					.await
 					.map(|r| r.0)
 					.map_err(Into::into)

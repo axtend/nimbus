@@ -1,5 +1,5 @@
 [package]
-name = "parachain-template-runtime"
+name = "allychain-template-runtime"
 authors = [ "Anonymous" ]
 description = "A FRAME-based Substrate Runtime, that demonstrates the Nimbus consensus framework."
 edition = "2021"
@@ -54,14 +54,14 @@ pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/axtend/
 
 # Cumulus dependencies
 cumulus-pallet-dmp-queue = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
-cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
+cumulus-pallet-allychain-system = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-pallet-xcm = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-pallet-xcmp-queue = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-primitives-timestamp = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-primitives-utility = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 pallet-collator-selection = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
-parachain-info = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
+allychain-info = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 
 # Nimbus Dependencies
 nimbus-primitives = { path = "../../nimbus-primitives", default-features = false }
@@ -69,10 +69,10 @@ pallet-author-inherent = { path = "../../pallets/author-inherent", default-featu
 pallet-author-slot-filter = { path = "../../pallets/author-slot-filter", default-features = false }
 
 
-# Polkadot Dependencies
+# Axia Dependencies
 pallet-xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
-polkadot-parachain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
-polkadot-runtime-common = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+axia-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+axia-runtime-common = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-builder = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-executor = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
@@ -87,7 +87,7 @@ default = [
 std = [
 	"codec/std",
 	"cumulus-pallet-dmp-queue/std",
-	"cumulus-pallet-parachain-system/std",
+	"cumulus-pallet-allychain-system/std",
 	"cumulus-pallet-xcm/std",
 	"cumulus-pallet-xcmp-queue/std",
 	"cumulus-primitives-core/std",
@@ -109,9 +109,9 @@ std = [
 	"pallet-timestamp/std",
 	"pallet-transaction-payment-rpc-runtime-api/std",
 	"pallet-transaction-payment/std",
-	"parachain-info/std",
-	"polkadot-parachain/std",
-	"polkadot-runtime-common/std",
+	"allychain-info/std",
+	"axia-allychain/std",
+	"axia-runtime-common/std",
 	"scale-info/std",
 	"serde",
 	"sp-api/std",

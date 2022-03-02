@@ -1,7 +1,7 @@
 {
 	"relaychain": {
-		"bin": "../../polkadot/target/release/polkadot",
-		"chain": "rococo-local",
+		"bin": "../../axia/target/release/axia",
+		"chain": "betanet-local",
 		"nodes": [
 			{
 				"name": "alice",
@@ -15,9 +15,9 @@
 			}
 		]
 	},
-	"parachains": [
+	"allychains": [
 		{
-			"bin": "../target/release/parachain-collator",
+			"bin": "../target/release/allychain-collator",
 			"id": "200",
 			"balance": "1000000000000000000000",
 			"nodes": [
