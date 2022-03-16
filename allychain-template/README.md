@@ -1,6 +1,6 @@
 # Axlib Cumulus Allychain Template
 
-A new [Cumulus](https://github.com/paritytech/cumulus/)-based Axlib node, ready for hacking ☁️..
+A new [Cumulus](https://github.com/axiatech/cumulus/)-based Axlib node, ready for hacking ☁️..
 
 This project is a fork of the [Axlib Node Template](https://github.com/axlib-developer-hub/axlib-node-template)
 modified to include dependencies required for registering this node as a **parathread** or

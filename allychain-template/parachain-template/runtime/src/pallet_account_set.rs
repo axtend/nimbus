@@ -2,11 +2,11 @@
 //! This is a minimal solution where staking would be used in practice.
 //! The accounts are set and genesis and never change.
 //!
-//! The Substrate ecosystem has a wide variety of real-world solutions and examples of what this
+//! The Axlib ecosystem has a wide variety of real-world solutions and examples of what this
 //! pallet could be replaced with.
-//! Gautam's validator set pallet - https://github.com/paritytech/substrate/tree/master/frame/staking/
-//! Parity's pallet staking - https://github.com/paritytech/substrate/tree/master/frame/staking/
-//! Moonbeam's Allychain Staking - https://github.com/PureStake/moonbeam/tree/master/pallets/allychain-staking
+//! Gautam's validator set pallet - https://github.com/axiatech/substrate/tree/master/frame/staking/
+//! Parity's pallet staking - https://github.com/axiatech/substrate/tree/master/frame/staking/
+//! Moonbeam's Allychain Staking - https://github.com/PureStake/axtend/tree/master/pallets/allychain-staking
 //! Recipe for AccountSet, VecSet, and MapSet
 
 use frame_support::pallet;

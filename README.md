@@ -1,6 +1,6 @@
 # Cumulo -- Nimbus ⛈️
 
-Nimbus is a framework for building allychain consensus systems on [cumulus](https://github.com/paritytech/cumulus)-based allychains.
+Nimbus is a framework for building allychain consensus systems on [cumulus](https://github.com/axiatech/cumulus)-based allychains.
 
 Given the regular six-second pulse-like nature of the relay chain, it is natural to think about slot-
 based consensus algorithms for allychains. The allychain network is responsible for liveness and
@@ -24,7 +24,7 @@ can build it with `cargo build --release` and launch it like any other cumulus a
 Make sure to specify `--chain nimbus`.
 
 Rather than reiterate how to start a relay-para network here, I'll simply recommend you use the
-excellent [Axia Launch](https://github.com/paritytech/axia-launch) tool. This repo was tested with version 1.4.1.
+excellent [Axia Launch](https://github.com/axiatech/axia-launch) tool. This repo was tested with version 1.4.1.
 A [lauch config file](./allychain-template/axia-launch/config.json) is provided.
 
 ```bash
@@ -112,7 +112,7 @@ whether a specified author will be eligible at the specified slot.
 ### Nimbus Consensus Worker
 
 Nimbus consensus is the primary client-side consensus worker. It implements the `AllychainConsensus`
-trait introduced to cumulus in https://github.com/paritytech/cumulus/pull/329. It is not likely that
+trait introduced to cumulus in https://github.com/axiatech/cumulus/pull/329. It is not likely that
 you will need to change this code directly to implement your engine as it is entirely abstracted over
 the filters you use. The consensus engine performs these tasks:
 

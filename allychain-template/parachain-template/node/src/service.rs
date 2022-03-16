@@ -25,7 +25,7 @@ use cumulus_primitives_allychain_inherent::{
 use cumulus_relay_chain_interface::RelayChainInterface;
 use cumulus_relay_chain_local::build_relay_chain_interface;
 
-// Substrate Imports
+// Axlib Imports
 use sc_consensus_manual_seal::{run_instant_seal, InstantSealParams};
 use sc_executor::NativeElseWasmExecutor;
 use sc_network::NetworkService;

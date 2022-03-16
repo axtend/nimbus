@@ -1,4 +1,4 @@
-//! Substrate Node CLI library.
+//! Axlib Node CLI library.
 
 #![warn(missing_docs)]
 
