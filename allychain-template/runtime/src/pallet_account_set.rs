@@ -6,7 +6,7 @@
 //! pallet could be replaced with.
 //! Gautam's validator set pallet - https://github.com/axiatech/axlib/tree/master/frame/staking/
 //! Axia's pallet staking - https://github.com/axiatech/axlib/tree/master/frame/staking/
-//! Moonbeam's Allychain Staking - https://github.com/PureStake/axtend/tree/master/pallets/allychain-staking
+//! Axtend's Allychain Staking - https://github.com/PureStake/axtend/tree/master/pallets/allychain-staking
 //! Recipe for AccountSet, VecSet, and MapSet
 
 use frame_support::pallet;

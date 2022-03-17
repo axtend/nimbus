@@ -517,7 +517,7 @@ pub fn start_instant_seal_node(config: Configuration) -> Result<TaskManager, sc_
 
 					// The nimbus runtime is shared among all nodes including the allychain node.
 					// Because this is not a allychain context, we need to mock the allychain inherent data provider.
-					//TODO might need to go back and get the block number like how I do in Moonbeam
+					//TODO might need to go back and get the block number like how I do in Axtend
 					let mocked_allychain = MockValidationDataInherentDataProvider {
 						current_para_block: 0,
 						relay_offset: 0,
