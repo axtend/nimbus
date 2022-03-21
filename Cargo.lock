@@ -1211,7 +1211,7 @@ dependencies = [
  "axia-node-core-pvf",
  "axia-node-primitives",
  "env_logger",
- "kusama-runtime",
+ "axctest-runtime",
  "log",
  "quote",
  "thiserror",
@@ -4563,7 +4563,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "kusama-runtime"
+name = "axctest-runtime"
 version = "0.9.17"
 source = "git+https://github.com/axtend/axia?branch=axia#cb8e33174ac19e8a591f39c19856e733586b4286"
 dependencies = [
@@ -4578,7 +4578,7 @@ dependencies = [
  "frame-system",
  "frame-system-rpc-runtime-api",
  "frame-try-runtime",
- "kusama-runtime-constants",
+ "axctest-runtime-constants",
  "log",
  "pallet-authority-discovery",
  "pallet-authorship",
@@ -4646,7 +4646,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "kusama-runtime-constants"
+name = "axctest-runtime-constants"
 version = "0.9.17"
 source = "git+https://github.com/axtend/axia?branch=axia#cb8e33174ac19e8a591f39c19856e733586b4286"
 dependencies = [
