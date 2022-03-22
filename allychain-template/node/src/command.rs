@@ -11,7 +11,7 @@ use allychain_template_runtime::{Block, RuntimeApi};
 use axia_allychain::primitives::AccountIdConversion;
 use sc_cli::{
 	ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
-	NetworkParams, Result, RuntimeVersion, SharedParams, SubstrateCli,
+	NetworkParams, Result, RuntimeVersion, SharedParams, AxlibCli,
 };
 use sc_service::config::{BasePath, PrometheusConfig};
 use sp_core::hexdisplay::HexDisplay;
@@ -29,13 +29,13 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, St
 	})
 }
 
-impl SubstrateCli for Cli {
+impl AxlibCli for Cli {
 	fn impl_name() -> String {
 		"Allychain Collator Template".into()
 	}
 
 	fn impl_version() -> String {
-		env!("SUBSTRATE_CLI_IMPL_VERSION").into()
+		env!("AXLIB_CLI_IMPL_VERSION").into()
 	}
 
 	fn description() -> String {
@@ -67,13 +67,13 @@ impl SubstrateCli for Cli {
 	}
 }
 
-impl SubstrateCli for RelayChainCli {
+impl AxlibCli for RelayChainCli {
 	fn impl_name() -> String {
 		"Allychain Collator Template".into()
 	}
 
 	fn impl_version() -> String {
-		env!("SUBSTRATE_CLI_IMPL_VERSION").into()
+		env!("AXLIB_CLI_IMPL_VERSION").into()
 	}
 
 	fn description() -> String {
@@ -172,7 +172,7 @@ pub fn run() -> Result<()> {
 						.chain(cli.relay_chain_args.iter()),
 				);
 
-				let axia_config = SubstrateCli::create_configuration(
+				let axia_config = AxlibCli::create_configuration(
 					&axia_cli,
 					&axia_cli,
 					config.tokio_handle.clone(),
@@ -276,7 +276,7 @@ pub fn run() -> Result<()> {
 
 				let tokio_handle = config.tokio_handle.clone();
 				let axia_config =
-					SubstrateCli::create_configuration(&axia_cli, &axia_cli, tokio_handle)
+					AxlibCli::create_configuration(&axia_cli, &axia_cli, tokio_handle)
 						.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
 				info!("Allychain id: {:?}", id);

@@ -191,7 +191,7 @@ pub fn import_queue<Client, Block: BlockT, I, CIDP>(
 	block_import: I,
 	create_inherent_data_providers: CIDP,
 	spawner: &impl sp_core::traits::SpawnEssentialNamed,
-	registry: Option<&substrate_prometheus_endpoint::Registry>,
+	registry: Option<&axlib_prometheus_endpoint::Registry>,
 	allychain: bool,
 ) -> ClientResult<BasicQueue<Block, I::Transaction>>
 where

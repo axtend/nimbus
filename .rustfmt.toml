@@ -1,5 +1,5 @@
-# These formatting rules to try conform the Substrate style guidelines:
-# >   https://wiki.parity.io/Substrate-Style-Guide
+# These formatting rules to try conform the Axlib style guidelines:
+# >   https://wiki.parity.io/Axlib-Style-Guide
 
 reorder_imports = true
 hard_tabs = true

@@ -17,8 +17,8 @@
 //! A Nimbus filter for the AuRa consensus algorithm. This filter does not use any entropy, it
 //! simply rotates authors in order. A single author is eligible at each slot.
 //!
-//! In the Substrate ecosystem, this algorithm is typically known as AuRa (authority round).
-//! There is a well known implementation in the main Substrate repository and published at
+//! In the Axlib ecosystem, this algorithm is typically known as AuRa (authority round).
+//! There is a well known implementation in the main Axlib repository and published at
 //! https://crates.io/crates/sc-consensus-aura. There are two primary differences between
 //! the approaches:
 //!
@@ -28,7 +28,7 @@
 //!    Whereas sc-consensus-aura includes the entire consensus stack including block signing, digest
 //!    formats, and slot prediction. This is a lot of overhead for a sipmle round robin
 //!    consensus that basically boils down to this function
-//!    https://github.com/paritytech/substrate/blob/0f849efc/client/consensus/aura/src/lib.rs#L91-L106
+//!    https://github.com/paritytech/axlib/blob/0f849efc/client/consensus/aura/src/lib.rs#L91-L106
 //!
 //! 2. The Nimbus framework places the author checking logic in the runtime which makes it relatively
 //!    easy for relay chain validators to confirm the author is valid.

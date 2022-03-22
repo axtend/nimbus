@@ -3,9 +3,9 @@ name = "pallet-template"
 authors = [ "Anonymous" ]
 description = "FRAME pallet template for defining custom runtime logic."
 edition = "2021"
-homepage = "https://substrate.dev"
+homepage = "https://axlib.dev"
 license = "Unlicense"
-repository = "https://github.com/paritytech/substrate/"
+repository = "https://github.com/paritytech/axlib/"
 version = "0.1.0"
 
 [package.metadata.docs.rs]
