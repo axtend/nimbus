@@ -2,11 +2,11 @@
 name = "allychain-template-node"
 authors = [ "Anonymous" ]
 build = "build.rs"
-description = "A Axlib node that demonstrates using the Nimbus consensus framework with instant seal and as a allychain."
+description = "A Substrate node that demonstrates using the Nimbus consensus framework with instant seal and as a allychain."
 edition = "2021"
-homepage = "https://axlib.dev"
+homepage = "https://substrate.dev"
 license = "Unlicense"
-repository = "https://github.com/paritytech/cumulus/"
+repository = "https://github.com/axiatech/cumulus/"
 version = "0.9.0"
 
 [package.metadata.docs.rs]
@@ -33,16 +33,16 @@ nimbus-consensus = { path = "../../nimbus-consensus" }
 nimbus-primitives = { path = "../../nimbus-primitives" }
 allychain-template-runtime = { path = "../runtime" }
 
-# Axlib Dependencies
+# Substrate Dependencies
 frame-benchmarking = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 frame-benchmarking-cli = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 pallet-transaction-payment-rpc = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
-axlib-frame-rpc-system = { git = "https://github.com/axtend/axlib", branch = "axlib" }
-axlib-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+substrate-frame-rpc-system = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+substrate-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
-## Axlib Client Dependencies
+## Substrate Client Dependencies
 sc-basic-authorship = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-chain-spec = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-cli = { git = "https://github.com/axtend/axlib", branch = "axlib" }
@@ -60,7 +60,7 @@ sc-tracing = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-transaction-pool-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
-## Axlib Primitive Dependencies
+## Substrate Primitive Dependencies
 sp-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sp-block-builder = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sp-blockchain = { git = "https://github.com/axtend/axlib", branch = "axlib" }
@@ -92,7 +92,7 @@ axia-service = { git = "https://github.com/axtend/axia", branch = "axia" }
 axia-test-service = { git = "https://github.com/axtend/axia", branch = "axia" }
 
 [build-dependencies]
-axlib-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 [features]
 runtime-benchmarks = [ "allychain-template-runtime/runtime-benchmarks" ]

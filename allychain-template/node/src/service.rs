@@ -1,4 +1,4 @@
-//! Service and ServiceFactory implementation. Specialized wrapper over axlib service.
+//! Service and ServiceFactory implementation. Specialized wrapper over substrate service.
 
 // std
 use std::{sync::Arc, time::Duration};
@@ -25,7 +25,7 @@ use cumulus_primitives_allychain_inherent::{
 use cumulus_relay_chain_interface::RelayChainInterface;
 use cumulus_relay_chain_local::build_relay_chain_interface;
 
-// Axlib Imports
+// Substrate Imports
 use sc_consensus_manual_seal::{run_instant_seal, InstantSealParams};
 use sc_executor::NativeElseWasmExecutor;
 use sc_network::NetworkService;
@@ -34,7 +34,7 @@ use sc_telemetry::{Telemetry, TelemetryHandle, TelemetryWorker, TelemetryWorkerH
 use sp_api::ConstructRuntimeApi;
 use sp_keystore::SyncCryptoStorePtr;
 use sp_runtime::traits::BlakeTwo256;
-use axlib_prometheus_endpoint::Registry;
+use substrate_prometheus_endpoint::Registry;
 
 /// Native executor instance.
 pub struct TemplateRuntimeExecutor;
@@ -195,7 +195,7 @@ where
 		+ sp_block_builder::BlockBuilder<Block>
 		+ cumulus_primitives_core::CollectCollationInfo<Block>
 		+ pallet_transaction_payment_rpc::TransactionPaymentRuntimeApi<Block, Balance>
-		+ axlib_frame_rpc_system::AccountNonceApi<Block, AccountId, Nonce>,
+		+ substrate_frame_rpc_system::AccountNonceApi<Block, AccountId, Nonce>,
 	sc_client_api::StateBackendFor<TFullBackend<Block>, Block>: sp_api::StateBackend<BlakeTwo256>,
 	Executor: sc_executor::NativeExecutionDispatch + 'static,
 	RB: Fn(
@@ -517,7 +517,7 @@ pub fn start_instant_seal_node(config: Configuration) -> Result<TaskManager, sc_
 
 					// The nimbus runtime is shared among all nodes including the allychain node.
 					// Because this is not a allychain context, we need to mock the allychain inherent data provider.
-					//TODO might need to go back and get the block number like how I do in Moonbeam
+					//TODO might need to go back and get the block number like how I do in Axtend
 					let mocked_allychain = MockValidationDataInherentDataProvider {
 						current_para_block: 0,
 						relay_offset: 0,

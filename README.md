@@ -1,6 +1,6 @@
 # Cumulo -- Nimbus ⛈️
 
-Nimbus is a framework for building allychain consensus systems on [cumulus](https://github.com/paritytech/cumulus)-based allychains.
+Nimbus is a framework for building allychain consensus systems on [cumulus](https://github.com/axiatech/cumulus)-based allychains.
 
 Given the regular six-second pulse-like nature of the relay chain, it is natural to think about slot-
 based consensus algorithms for allychains. The allychain network is responsible for liveness and
@@ -24,7 +24,7 @@ can build it with `cargo build --release` and launch it like any other cumulus a
 Make sure to specify `--chain nimbus`.
 
 Rather than reiterate how to start a relay-para network here, I'll simply recommend you use the
-excellent [Axia Launch](https://github.com/paritytech/axia-launch) tool. This repo was tested with version 1.4.1.
+excellent [Axia Launch](https://github.com/axiatech/axia-launch) tool. This repo was tested with version 1.4.1.
 A [lauch config file](./allychain-template/axia-launch/config.json) is provided.
 
 ```bash
@@ -45,7 +45,7 @@ cargo build --release
 polkdot-launch ./allychain-template/axia-launch/config.json
 ```
 
-To learn more about launching relay-para networks, check out the [cumulus workshop](https://axlib.dev/cumulus-workshop).
+To learn more about launching relay-para networks, check out the [cumulus workshop](https://substrate.dev/cumulus-workshop).
 
 ## Design Overview
 
@@ -93,8 +93,8 @@ consensus engine simply by creating filters that implement the `CanAuthor` trait
 This repository comes with a few example filters already, and additional examples are welcome. The examples are:
 * PseudoRandom FixedSized Subset - This filter takes a finite set (eg a staked set) and filters it down to a pseudo-random
 subset at each height. The eligible ratio is configurable in the pallet. This is a good learning example.
-* Aura - The authority round consensus engine is popular in the Axlib ecosystem because it was one
-of the first (and simplest!) engines implemented in Axlib. Aura can be expressed in the Nimbus
+* Aura - The authority round consensus engine is popular in the Substrate ecosystem because it was one
+of the first (and simplest!) engines implemented in Substrate. Aura can be expressed in the Nimbus
 filter framework and is included as an example filter. If you are considering using aura, that crate
 has good documentation on how it differs from `sc-consensus-aura`.
 * (Planned) FixedSizedSubset - The author submits a VRF output that has to be below a threshold to be able to author.
@@ -112,12 +112,12 @@ whether a specified author will be eligible at the specified slot.
 ### Nimbus Consensus Worker
 
 Nimbus consensus is the primary client-side consensus worker. It implements the `AllychainConsensus`
-trait introduced to cumulus in https://github.com/paritytech/cumulus/pull/329. It is not likely that
+trait introduced to cumulus in https://github.com/axiatech/cumulus/pull/329. It is not likely that
 you will need to change this code directly to implement your engine as it is entirely abstracted over
 the filters you use. The consensus engine performs these tasks:
 
 * Slot prediction - it calls the runtime API mentioned previously to determine whether ti is eligible. If not, it returns early.
-* Authorship - It calls into a standard Axlib proposer to construct a block (probably including the author inherent).
+* Authorship - It calls into a standard Substrate proposer to construct a block (probably including the author inherent).
 * Self import - it imports the block that the proposer created (called the pre-block) into the node's local database.
 * Sealing - It adds a seal digest to the block - This is what is used by other nodes to verify the authorship information.
 
@@ -127,7 +127,7 @@ For a allychain node to import a sealed block authored by one of its peers, it n
 will remove the nimbus seal and check it against the nimbus consensus digest from the runtime. If that process fails,
 the block is immediately thrown away before the expensive execution even begins. If it succeeds, then
 the pre-block (the part that's left after the seal is stripped) is passed into the
-[import pipeline](https://axlib.dev/docs/en/knowledgebase/advanced/block-import) for processing
+[import pipeline](https://substrate.dev/docs/en/knowledgebase/advanced/block-import) for processing
 and execution. Finally, the locally produced result is compared to the result received across the network.
 
 ### Custom Block Executor
